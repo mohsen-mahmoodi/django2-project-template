@@ -1,0 +1,8 @@
+dj-database-url
+django-configurations
+django-debug-toolbar
+django-extensions
+psycopg2
+gunicorn
+whitenoise
+pyyaml
