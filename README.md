@@ -10,17 +10,29 @@ configurations to support [heroku](https://heroku.com/) deployment and since I u
 
 ## Features
 
+- [Python](https://www.python.org) 3
 - [Django](https://www.djangoproject.com/) 2.0+
-- Based on [Pipenv](https://github.com/kennethreitz/pipenv) - the officially recommended Python packaging tool from Python.org.
-- Development, Staging and Production settings with [django-configurations](https://django-configurations.readthedocs.org).
-- Get value insight and debug information while on Development with [django-debug-toolbar](https://django-debug-toolbar.readthedocs.org).
+- Based on [Pipenv](https://github.com/kennethreitz/pipenv) - the officially recommended Python packaging tool from 
+[Python.org](https://www.python.org).
+- [Pip](https://pypi.org/project/pip/) and [virtulenv](https://virtualenv.pypa.io/en/latest/) compatible setup
+procedure.
+- Development, Staging and Production settings with 
+[django-configurations](https://django-configurations.readthedocs.org).
+- Get value insight and debug information while on Development with 
+[django-debug-toolbar](https://django-debug-toolbar.readthedocs.org).
 - Collection of custom extensions with [django-extensions](http://django-extensions.readthedocs.org).
 - HTTPS and other security related settings on Staging and Production.
 - Procfile for running gunicorn with New Relic's Python agent.
 - PostgreSQL database support with psycopg2.
-- Externalized logging configuration based on [Good logging practice in Python](https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/)
+- Externalized logging configuration based on 
+[Good logging practice in Python](https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/)
 
 ## How to install
+This project template is intended to use [Pipenv](https://github.com/kennethreitz/pipenv), also it is not a requirement.
+I see some people in the community who still prefer using [pip](https://pypi.org/project/pip/) +
+[virtualenv](https://virtualenv.pypa.io/en/latest/). This is why I included both setup procedures.
+
+### using pipenv
 
 ```bash
 pip3 install pipenv
@@ -38,6 +50,36 @@ pipenv install -r requirements/dev.txt --dev
 rm -rf requirements
 cp example.env .env
 cp example.logging.yaml logging.yaml
+```
+
+### using pip and virtualenv
+
+#### Install virtualenv and create project directory
+
+```bash
+pip install virtualenv
+mkdir project_dir
+cd project_dir
+virtualenv -p <python-interpreter> .env
+source .env/bin/activate
+```
+
+#### Install django and create the project
+
+```bash
+mkdir project_name
+cd project_name
+pip install django
+django-admin.py startproject \
+  --template=https://github.com/mohsen-mahmoodi/django2-project-template/archive/master.zip \
+  --name=Procfile \
+  --extension=py,md,env,yaml \
+  project_name .
+pip install -r requirements/common.txt
+pip install -r requirements/dev.txt
+cp example.env .env
+cp example.logging.yaml logging.yaml
+export $(grep -v '^#' .env | xargs)
 ```
 
 ## Environment variables
@@ -64,6 +106,23 @@ DJANGO_SECURE_SSL_HOST=
 DJANGO_SECURE_SSL_REDIRECT=yes
 DJANGO_SECURE_PROXY_SSL_HEADER=HTTP_X_FORWARDED_PROTO,https
 ```
+
+### Reloading environment variables 
+
+After updating or adding new environment variables, make sure to load the variables and reload the project:
+
+#### Using `pipenv run`
+
+Nothing required, the variables gets loaded automatically by the pipenv.
+
+#### Using `pipenv shell`
+
+You should exit the current pipenv shell by typing `exit` and reload the session again by running `pipenv shell` and 
+then run the development server again.
+
+#### Using `pip` and `virtualenv`
+
+just run the command `export $(grep -v '^#' .env | xargs)` again and restart the development server.  
 
 ## Deployment
 
