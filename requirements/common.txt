@@ -1,5 +1,5 @@
 dj-database-url==0.5.0
-django-configurations
+django-configurations==2.1
 django-debug-toolbar
 django-extensions
 psycopg2
